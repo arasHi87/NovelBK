@@ -6,7 +6,9 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import os
+import redis
 from scrapy import Request
+from NovelBK import settings
 from NovelBK.items import Wenku8IndexItem
 from scrapy.exporters import JsonItemExporter
 
@@ -21,3 +23,8 @@ class Wenku8IndexPipeline(object):
             self.exporter.finish_exporting()
             self.file.close()
         return item
+    
+    def open_spider(self, spider):
+        r = redis.Redis(host = settings.REDIS_HOST, port = settings.REDIS_PORT)
+        if r.hlen(settings.REDIS_DATA_DICT) == 0:
+            r.hset(setting.REDIS_DATA_DICT, 'field', 0)
