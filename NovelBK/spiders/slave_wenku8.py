@@ -34,21 +34,21 @@ class Wenku8SlaveSpider(RedisSpider):
                     temp.append(n_name)
         yield item
 
-        # # get content
-        # for x in response.xpath("//table/tr/td[@class='ccss']/a"):
-        #     vid = x.xpath('@href').get().replace('.htm', '')
-        #     vname = x.xpath('text()').get()
-        #     url = response.url.replace('index', vid)
-        #     yield Request(
-        #         url = url,
-        #         meta = {
-        #             'aid': aid,
-        #             'vid': vid,
-        #             'vname': vname,
-        #             'book_name': book_name
-        #         },
-        #         callback = self.parse_chapter
-        #     )
+        # get content
+        for x in response.xpath("//table/tr/td[@class='ccss']/a"):
+            vid = x.xpath('@href').get().replace('.htm', '')
+            vname = x.xpath('text()').get()
+            url = response.url.replace('index', vid)
+            yield Request(
+                url = url,
+                meta = {
+                    'aid': aid,
+                    'vid': vid,
+                    'vname': vname,
+                    'book_name': book_name
+                },
+                callback = self.parse_chapter
+            )
     
     def parse_chapter(self, response):
         content = BeautifulSoup(response.xpath('//*[@id="content"]').get(), "lxml").text
