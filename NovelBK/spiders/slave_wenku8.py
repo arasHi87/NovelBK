@@ -1,7 +1,6 @@
 import os
 import re
 from scrapy import Request
-from NovelBK import settings
 from bs4 import BeautifulSoup
 from NovelBK.items import Wenku8IndexItem
 from urllib.request import urlretrieve
@@ -39,16 +38,18 @@ class Wenku8SlaveSpider(RedisSpider):
             vid = x.xpath('@href').get().replace('.htm', '')
             vname = x.xpath('text()').get()
             url = response.url.replace('index', vid)
-            yield Request(
-                url = url,
-                meta = {
-                    'aid': aid,
-                    'vid': vid,
-                    'vname': vname,
-                    'book_name': book_name
-                },
-                callback = self.parse_chapter
-            )
+
+            if not self.server.hget(self.settings.get('REDIS_DATA_DICT'), url):
+                yield Request(
+                    url = url,
+                    meta = {
+                        'aid': aid,
+                        'vid': vid,
+                        'vname': vname,
+                        'book_name': book_name
+                    },
+                    callback = self.parse_chapter
+                )
     
     def parse_chapter(self, response):
         content = BeautifulSoup(response.xpath('//*[@id="content"]').get(), "lxml").text
@@ -59,7 +60,7 @@ class Wenku8SlaveSpider(RedisSpider):
             os.makedirs(path)
 
         if '因版权问题，文库不再提供该小说的阅读！' in content:
-            url = settings.WENKU8_DOWNLOAD_URL.format(
+            url = self.settings.get('WENKU8_DOWNLOAD_URL').format(
                     response.meta['aid'],
                     response.meta['vid'])
             urlretrieve(url, filename = os.path.join(path, response.meta['vname'] + '.txt'))
@@ -67,3 +68,5 @@ class Wenku8SlaveSpider(RedisSpider):
             if response.meta['vname'] != '插图':
                 with open(os.path.join(path, response.meta['vname'] + '.txt'), 'w+') as fp:
                     fp.write(content)
+
+        self.server.hset(self.settings.get('REDIS_DATA_DICT'), response.url, 0)
