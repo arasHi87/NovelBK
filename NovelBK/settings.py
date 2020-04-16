@@ -77,12 +77,9 @@ REDIS_DATA_DICT = 'NovelBK:seen_urls'
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'scrapy.pipelines.files.FilesPipeline': 1,
     'scrapy_redis.pipelines.RedisPipeline': 300,
     'NovelBK.pipelines.Wenku8IndexPipeline': 1,
 }
-
-FILES_STORE = 'data'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
