@@ -31,6 +31,7 @@ class Wenku8SlaveSpider(RedisSpider):
                 n_name = ele.xpath('a/text()').get()
                 if n_name != '插图' and n_name:
                     temp.append(n_name)
+        item['index'][book_name].append(temp)
         yield item
 
         # get content
