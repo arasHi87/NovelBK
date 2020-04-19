@@ -16,7 +16,13 @@ class Wenku8IndexPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, Wenku8IndexItem):
             book_name, content = list(item['index'].items())[0]
-            self.file = open(os.path.join('data', book_name, book_name +  '.json'), 'wb+')
+            json_file_path = os.path.join('data', book_name, book_name +  '.json')
+
+            # here is weird, wb+ can't create file, maybe something weong lol
+            if not os.path.exists(json_file_path):
+                os.mknod(json_file_path)
+
+            self.file = open(json_file_path, 'wb')
             self.exporter = JsonItemExporter(self.file, encoding='utf-8', ensure_ascii=False)
             self.exporter.start_exporting()
             self.exporter.export_item(item['index'])
