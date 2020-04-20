@@ -16,7 +16,7 @@ class Wenku8IndexPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, Wenku8IndexItem):
             book_name, content = list(item['index'].items())[0]
-            json_file_path = os.path.join('spiders/data', book_name)
+            json_file_path = os.path.join('data', book_name)
 
             if not os.path.isdir(json_file_path):
                 os.makedirs(json_file_path)
