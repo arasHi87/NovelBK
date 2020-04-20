@@ -67,7 +67,7 @@ class Wenku8SlaveSpider(RedisSpider):
         content = BeautifulSoup(response.xpath('//*[@id="content"]').get().strip(), "lxml").text
         title = normalize('NFKD', response.xpath('//*[@id="title"]/text()').get())
         v_name = "".join(title.rsplit(response.meta['c_name'], 1)).strip()
-        path = os.path.join(loc, '../data/wenku8', response.meta['b_name'], v_name)
+        path = os.path.join(loc, '../data/wenku8', response.meta['b_name'], 'txt', v_name)
 
         if not os.path.isdir(path):
             os.makedirs(path)
