@@ -1,9 +1,11 @@
 import os
 import re
+from opencc import OpenCC
 from scrapy import Request
 from bs4 import BeautifulSoup
-from NovelBK.items import Wenku8IndexItem
+from unicodedata import normalize
 from urllib.request import urlretrieve
+from NovelBK.items import Wenku8IndexItem
 from scrapy_redis.spiders import RedisSpider
 
 class Wenku8SlaveSpider(RedisSpider):
@@ -26,11 +28,12 @@ class Wenku8SlaveSpider(RedisSpider):
             if n_type == 'vcss':
                 if temp:
                     item['index'][book_name].append(temp)
-                temp = [ele.xpath('text()').get()]
+                temp = [normalize('NFKD', ele.xpath('text()').get())]
             else:
-                n_name = ele.xpath('a/text()').get()
-                if n_name != '插图' and n_name:
-                    temp.append(n_name)
+                if ele.xpath('a/text()').get():
+                    n_name = normalize('NFKD', ele.xpath('a/text()').get())
+                    if n_name != '插图':
+                        temp.append(n_name)
         item['index'][book_name].append(temp)
         yield item
 
@@ -46,15 +49,17 @@ class Wenku8SlaveSpider(RedisSpider):
                     meta = {
                         'aid': aid,
                         'vid': vid,
-                        'vname': vname,
+                        'vname': normalize('NFKD', vname),
                         'book_name': book_name
                     },
                     callback = self.parse_chapter
                 )
     
     def parse_chapter(self, response):
-        content = BeautifulSoup(response.xpath('//*[@id="content"]').get(), "lxml").text
-        chapter = "".join(response.xpath('//*[@id="title"]/text()').get().rsplit(response.meta['vname'], 1)).strip()
+        cc = OpenCC('s2t')
+        content = BeautifulSoup(response.xpath('//*[@id="content"]').get().strip(), "lxml").text
+        chapter = "".join(normalize('NFKD',
+            response.xpath('//*[@id="title"]/text()').get()).rsplit(response.meta['vname'], 1)).strip()
         path = os.path.join('data', response.meta['book_name'], chapter)
 
         if not os.path.isdir(path):
@@ -68,6 +73,6 @@ class Wenku8SlaveSpider(RedisSpider):
         else:
             if response.meta['vname'] != '插图':
                 with open(os.path.join(path, response.meta['vname'] + '.txt'), 'w+') as fp:
-                    fp.write(content)
+                    fp.write(cc.convert(content))
 
         self.server.hset(self.settings.get('REDIS_DATA_DICT'), response.url, 0)
