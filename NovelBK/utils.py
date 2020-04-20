@@ -43,7 +43,6 @@ def txt2epub(data, base_store_path):
         book.add_item(epub.EpubNav())
         book.spine = ['nav'] + chapter_list
         epub.write_epub(os.path.join(path, b_name + '.epub'), book, {})
-        print('fuck this world')
 
 if __name__ == '__main__':
     test_data = {'index': {'战斗司书': [['第一卷 战斗司书与恋爱爆弹',
