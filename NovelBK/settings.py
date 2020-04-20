@@ -108,3 +108,5 @@ WENKU8_DOWNLOAD_URL =  'http://dl.wenku8.com/packtxt.php?aid={}&vid={}&charset=b
 
 # data save path
 SAVE_PATH = 'data'
+
+DEBUG_MOD = True
