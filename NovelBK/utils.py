@@ -32,7 +32,7 @@ def txt2epub(data, base_store_path):
             chapter = epub.EpubHtml(title = c_name, file_name = c_id + '.xhtml')
 
             with open(os.path.join(base_store_path, base_name, 'txt', v_name, c_name + '.txt'), 'r') as fp:
-                chapter.content = fp.read().replace('\n', '<br>')
+                chapter.content = '<h1>{}</h1><br>{}'.format(c_name, fp.read().replace('\n', '<br>'))
             
             book.add_item(chapter)
             chapter_list.append(chapter)
