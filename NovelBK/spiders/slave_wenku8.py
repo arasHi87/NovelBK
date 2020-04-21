@@ -41,7 +41,9 @@ class Wenku8SlaveSpider(RedisSpider):
                     temp.append(c_name)
 
         item['index'][b_name].append(temp)
-        yield item
+        # yield item
+
+        url_check_list = [response.url.replace('index.htm', x.get()) for x in response.xpath("//table/tr/td[@class='ccss']/a/@href")]
 
         # get content
         for x in response.xpath("//table/tr/td[@class='ccss']/a"):
@@ -55,7 +57,9 @@ class Wenku8SlaveSpider(RedisSpider):
                         'aid': aid,
                         'vid': vid,
                         'c_name': normalize('NFKD', c_name),
-                        'b_name': b_name
+                        'b_name': b_name,
+                        'item': item,
+                        'url_check_list': url_check_list
                     },
                     callback = self.parse_chapter
                 )
@@ -86,3 +90,12 @@ class Wenku8SlaveSpider(RedisSpider):
                         fp.write(img)
         
         self.server.hset(self.settings.get('REDIS_DATA_DICT'), response.url, 0)
+        file_status = True
+
+        for url in response.meta['url_check_list']:
+            if not self.server.hget(self.settings.get('REDIS_DATA_DICT'), url):
+                file_status = False
+                break
+        
+        if file_status:
+            yield response.meta['item']
