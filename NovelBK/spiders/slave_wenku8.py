@@ -38,8 +38,7 @@ class Wenku8SlaveSpider(RedisSpider):
             else:
                 if ele.xpath('a/text()').get():
                     c_name = normalize('NFKD', ele.xpath('a/text()').get())
-                    if c_name != '插图':
-                        temp.append(c_name)
+                    temp.append(c_name)
 
         item['index'][b_name].append(temp)
         yield item
@@ -81,5 +80,9 @@ class Wenku8SlaveSpider(RedisSpider):
             if response.meta['c_name'] != '插图':
                 with open(os.path.join(path, response.meta['c_name'] + '.txt'), 'w+') as fp:
                     fp.write(cc.convert(content))
+            else:
+                with open(os.path.join(path, response.meta['c_name'] + '.txt'), 'w+') as fp:
+                    for img in response.xpath('//*[@class="divimage"]').getall():
+                        fp.write(img)
         
         self.server.hset(self.settings.get('REDIS_DATA_DICT'), response.url, 0)
