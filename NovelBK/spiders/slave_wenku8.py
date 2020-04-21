@@ -27,20 +27,22 @@ class Wenku8SlaveSpider(RedisSpider):
         temp = []
         item = Wenku8IndexItem()
         item['index'] = {}
-        item['index'][b_name] = []
+        item['index'][b_name] = {}
+        item['index'][b_name]['index'] = []
+        item['index'][b_name]['author'] = response.xpath('//*[@id="info"]/text()').get().replace('作者：', '')
 
         for ele in response.xpath('//table/tr/td'):
             n_type = ele.xpath('@class').get()
             if n_type == 'vcss':
                 if temp:
-                    item['index'][b_name].append(temp)
+                    item['index'][b_name]['index'].append(temp)
                 temp = [normalize('NFKD', ele.xpath('text()').get())]
             else:
                 if ele.xpath('a/text()').get():
                     c_name = normalize('NFKD', ele.xpath('a/text()').get())
                     temp.append(c_name)
 
-        item['index'][b_name].append(temp)
+        item['index'][b_name]['index'].append(temp)
         # yield item
 
         url_check_list = [response.url.replace('index.htm', x.get()) for x in response.xpath("//table/tr/td[@class='ccss']/a/@href")]

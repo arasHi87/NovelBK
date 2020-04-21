@@ -10,7 +10,7 @@ def txt2epub(data, base_store_path):
     base_name = list(data['index'].keys())[0]
     data = data['index'][base_name]
     
-    for volume in data:
+    for volume in data['index']:
         v_name = volume[0]
         b_name = base_name + v_name
         book = epub.EpubBook()
@@ -23,11 +23,10 @@ def txt2epub(data, base_store_path):
 
         book.set_identifier('{}{}'.format(b_name, randint(0, 100000000)))
         book.set_title(b_name)
-        book.add_author('meow')
+        book.add_author(data['author'])
         book.set_language('en')
-        del volume[0]
 
-        for c_name in volume:
+        for c_name in volume[1:]:
             c_id = str(randint(0, 100000000))
             chapter = epub.EpubHtml(title = c_name, file_name = c_id + '.xhtml')
 
