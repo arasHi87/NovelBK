@@ -9,6 +9,8 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+
 BOT_NAME = 'NovelBK'
 
 SPIDER_MODULES = ['NovelBK.spiders']
@@ -101,6 +103,13 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# mongo db settings
+DB_NAME = 'NovelBK'
+DB_HOST = '192.168.7.228'
+DB_PORT = '27017'
+DB_USER = os.environ.get('DB_USER')
+DB_PWD = os.environ.get('DB_PWD')
 
 # Wenku8 setting
 WENKU8_MAX_AID = 3000

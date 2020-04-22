@@ -81,7 +81,7 @@ class Wenku8SlaveSpider(RedisSpider):
             url = self.settings.get('WENKU8_DOWNLOAD_URL').format(
                 response.meta['aid'],
                 response.meta['vid'])
-            urlretrieve(url, filename = os.path.join(path, response.meta['v_name'] + '.txt'))
+            urlretrieve(url, filename = os.path.join(path, v_name + '.txt'))
         else:
             if response.meta['c_name'] != '插图':
                 with open(os.path.join(path, response.meta['c_name'] + '.txt'), 'w+') as fp:
