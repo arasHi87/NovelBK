@@ -24,6 +24,8 @@ if want to run scrapy in python3, it must be in virtualen
 ```bash
 sudo apt install python3-venv
 python3 -m venv ~/venv/NovelBK
+source ~/venv/NovelBK/bin/activate
+pip install -r requirements.txt
 ```
 
 ## Run
