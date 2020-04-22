@@ -18,6 +18,7 @@ class MasterWenku8Spider(scrapy.Spider):
         if is_exist or int(aid) < settings.WENKU8_MAX_AID:
             url = response.url.replace(aid + '.htm', str(int(aid) + 1) + '.htm')
             yield scrapy.Request(url = url, callback = self.parse)
-            r.lpush('NovelBK:start_urls',
-                response.xpath('//div[5]/div/div/div[1]/div[4]/div/span[1]/fieldset/div/a/@href').get())
+            if is_exist:
+                r.lpush('NovelBK:start_urls',
+                    response.xpath('//div[5]/div/div/div[1]/div[4]/div/span[1]/fieldset/div/a/@href').get())
                 
