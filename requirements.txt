@@ -10,6 +10,8 @@ cryptography==2.9
 cssselect==1.1.0
 EbookLib==0.17.1
 epub==0.5.2
+gitdb==4.0.4
+GitPython==3.1.1
 hyperlink==19.0.0
 idna==2.9
 incremental==17.5.0
@@ -24,6 +26,7 @@ pyasn1-modules==0.2.8
 pycparser==2.20
 PyDispatcher==2.0.5
 PyHamcrest==2.0.2
+pymongo==3.10.1
 pyOpenSSL==19.1.0
 pypub==1.5
 queuelib==1.5.0
@@ -33,6 +36,7 @@ Scrapy==2.0.1
 scrapy-redis==0.6.8
 service-identity==18.1.0
 six==1.14.0
+smmap==3.0.2
 soupsieve==2.0
 Twisted==20.3.0
 urllib3==1.25.9
