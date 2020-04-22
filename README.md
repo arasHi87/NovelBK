@@ -17,6 +17,15 @@ All settings are in `NovelBK/settings.py`.
 * `WENKU8_MAX_AID`: the nax book id will be crawled
 * `DEBUG_MOD`: debug mod, it will allow get same url
 
+## Enviroment
+
+if want to run scrapy in python3, it must be in virtualen
+
+```bash
+sudo apt install python3-venv
+python3 -m venv ~/venv/NovelBK
+```
+
 ## Run
 
 run redis server.
