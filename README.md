@@ -1,39 +1,44 @@
 # NovelBK
 
-爬取各大輕小說站，並將 txt 轉換成易於閱讀之 epub，使用 redis-spider 分散式爬蟲加快速度
+crawler base on reids-scrapy, can help you get Novel from other site and covert txt to epub.
 
-## Support
+## Settings
 
-* wenku8
+All settings are in `NovelBK/settings.py`.
+
+* `REDIS_HOST`: redis server ip
+* `REDIS_PORT`: redis server port
+* `REDIS_DATA_DICT`: this can help you filter the url has been seen
+* `DB_NAME`: mongoDB name
+* `DB_HOST`: mongoDB server ip
+* `DB_PORT`: mongoDB server port
+* `DB_USER`: mongoDB user name
+* `DB_PWD`: mongoDB password
+* `WENKU8_MAX_AID`: the nax book id will be crawled
+* `DEBUG_MOD`: debug mod, it will allow get same url
 
 ## Run
 
-* Redis-server
-
-分散式爬蟲資料庫
+run redis server.
 
 ```bash
-docker run -p 6379:6379 -d                  \
-    -v $PWD/redis-data:/bitnami/redis/data  \
-    --name redis_cont                       \
-    bitnami/redis:latest
-
+docker-compose up -d -f redis-compose.yml
 ```
 
-* Master-side
-
-負責檢測所有書籍 url 提供給 slver
+run mongoDB server.
 
 ```bash
-cd NovelBK/spider
-scrapy runspider master.py
+docker-compose up -d -f mongo-compose.yml
 ```
 
-* Wnku8Slaver-side
-
-負責抓取有關 wenku8 的 url
+run wenku8 slave, it will help u crawler book content.
 
 ```bash
-cd NovelBK/spider
-scrapy runspider slave_wenku8.py
+scrapy runspider NovelBK/spiders/slave_wenku8.py
+```
+
+run master, it will provide the slave spider url.
+
+```bash
+scrapy runspider NovelBK/spiders/master.py
 ```
