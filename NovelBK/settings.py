@@ -10,6 +10,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 import os
+from getpass import getpass
 
 BOT_NAME = 'NovelBK'
 
@@ -115,7 +116,8 @@ DB_PWD = os.environ.get('DB_PWD')
 WENKU8_MAX_AID = 3000
 WENKU8_DOWNLOAD_URL =  'http://dl.wenku8.com/packtxt.php?aid={}&vid={}&charset=big5'
 
-# data save path
-SAVE_PATH = 'data'
-
+# debug
 DEBUG_MOD = True
+
+# file information
+TEMP_STORE_PATH = 'temp'
