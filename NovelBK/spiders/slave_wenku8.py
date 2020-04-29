@@ -94,7 +94,7 @@ class Wenku8SlaveSpider(RedisSpider):
                 response.meta['v_id'])
             urlretrieve(url, filename = os.path.join(path, response.meta['c_name'] + '.txt'))
         else:
-            if response.meta['c_name'] != '插图':
+            if response.meta['c_name'] != '插圖':
                 with open(os.path.join(path, response.meta['c_name'] + '.txt'), 'w+') as fp:
                     fp.write(cc.convert(content))
             else:
