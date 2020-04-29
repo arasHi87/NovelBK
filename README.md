@@ -17,7 +17,7 @@ All settings are in `NovelBK/settings.py`.
 * `WENKU8_MAX_AID`: the nax book id will be crawled
 * `DEBUG_MOD`: debug mod, it will allow get same url
 
-## Enviroment
+## Install
 
 if want to run scrapy in python3, it must be in virtualen
 
@@ -26,6 +26,15 @@ sudo apt install python3-venv
 python3 -m venv ~/venv/NovelBK
 source ~/venv/NovelBK/bin/activate
 pip install -r requirements.txt
+```
+
+## Enviroment
+
+setting important information in environment variables, you can set in every time when reboot, or just write in `.bashrc`
+
+```bash
+export DB_USER=<your mongodb user name>
+export DB_PWD=<your mongodb password>
 ```
 
 ## Run
