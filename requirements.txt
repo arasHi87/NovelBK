@@ -19,7 +19,7 @@ httplib2==0.17.3
 hyperlink==19.0.0
 idna==2.9
 incremental==17.5.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 lxml==4.5.0
 MarkupSafe==1.1.1
 oauth2client==4.1.3
