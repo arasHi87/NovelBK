@@ -37,7 +37,7 @@ pymongo==3.10.1
 pyOpenSSL==19.1.0
 pypub==1.5
 pytz==2019.3
-PyYAML==5.3.1
+PyYAML==5.4
 queuelib==1.5.0
 redis==3.4.1
 requests==2.23.0
